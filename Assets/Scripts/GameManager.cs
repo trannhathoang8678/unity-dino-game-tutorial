@@ -1,4 +1,5 @@
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,10 +16,14 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI hiscoreText;
     public TextMeshProUGUI gameOverText;
     public Button retryButton;
-
+    private int level = 0;
     private Player player;
     private Spawner[] spawners;
-
+    public AudioListener audioListener;
+    public AudioClip duckClip;
+    public AudioClip maazClip;
+    public AudioClip nightClip;
+    public AudioClip boomClip;
     private Vector3 startPosition = new Vector3(-6, 0, 0);
 
     private float score;
@@ -43,6 +48,10 @@ public class GameManager : MonoBehaviour
     {
         player = FindObjectOfType<Player>();
         spawners = FindObjectsOfType<Spawner>();
+        maazClip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Sound/maaz.mp3");
+        nightClip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Sound/night.mp3");
+        boomClip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Sound/boom.mp3");
+        audioListener = Camera.main.GetComponent<AudioListener>();
 
         NewGame();
     }
@@ -59,19 +68,7 @@ public class GameManager : MonoBehaviour
         gameSpeed = initialGameSpeed;
         enabled = true;
 
-        for (int i = 0; i < spawners.Length; i++)
-        {
-            for (int j = 0; j < spawners[i].objects.Length; j++)
-            {
-                if (spawners[i].objects[j].prefab.name == "Bird" ||
-                    spawners[i].objects[j].prefab.name == "Meteor" ||
-                    spawners[i].objects[j].prefab.name == "Meteorite_01")
-                {
-                    spawners[i].objects[j].spawnChance = 0f;
-                }
-                
-            }
-        }
+        ConfigLevel0();
 
         player.gameObject.SetActive(true);
         foreach (Spawner spawner in spawners)
@@ -87,6 +84,10 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        audioListener.GetComponent<AudioSource>().clip = boomClip;
+        // Play the new audio clip
+        audioListener.GetComponent<AudioSource>().Play();
+        level = 0;
         gameSpeed = 0f;
         enabled = false;
 
@@ -98,49 +99,108 @@ public class GameManager : MonoBehaviour
         }
         gameOverText.gameObject.SetActive(true);
         retryButton.gameObject.SetActive(true);
-
+        
         UpdateHiscore();
     }
 
     private void Update()
     {
+        
+
         gameSpeed += gameSpeedIncrease * Time.deltaTime;
         score += gameSpeed * Time.deltaTime * 2f;
         scoreText.text = Mathf.FloorToInt(score).ToString("D5");
-
+        
         if (score >= 100)
         {
-            for (int i = 0; i < spawners.Length; i++)
+            if (level < 1)
             {
-                for (int j = 0; j < spawners[i].objects.Length; j++)
-                {
-                    if (spawners[i].objects[j].prefab.name == "Bird")
-                    {
-                        spawners[i].objects[j].spawnChance = 0.2f;
-                    }
-                }
+                // Set the new audio clip
+                audioListener.GetComponent<AudioSource>().clip = maazClip;
+                // Play the new audio clip
+                audioListener.GetComponent<AudioSource>().Play();
+                level = 1;
             }
+            ConfigLevel1();
+            ConfigLevel5();
         }
         if (score >= 200)
         {
-            for (int i = 0; i < spawners.Length; i++)
+            if (level < 2)
             {
-                for (int j = 0; j < spawners[i].objects.Length; j++)
-                {
-                    if (spawners[i].objects[j].prefab.name == "Meteor")
-                    {
-                        spawners[i].objects[j].spawnChance = 0.16f;
-                    }
-                    if (spawners[i].objects[j].prefab.name == "Meteorite_01")
-                    {
-                        spawners[i].objects[j].spawnChance = 0.2f;
-                    }
-                }
+                // Set the new audio clip
+                audioListener.GetComponent<AudioSource>().clip = nightClip;
+                // Play the new audio clip
+                audioListener.GetComponent<AudioSource>().Play();
+                level = 2;
             }
+            ConfigLevel2();
 
         }
 
 
+    }
+
+    private void ConfigLevel1()
+    {
+        for (int i = 0; i < spawners.Length; i++)
+        {
+            for (int j = 0; j < spawners[i].objects.Length; j++)
+            {
+                if (spawners[i].objects[j].prefab.name == "Bird")
+                {
+                    spawners[i].objects[j].spawnChance = 0.2f;
+                }
+            }
+        }
+    }
+
+    private void ConfigLevel2()
+    {
+        for (int i = 0; i < spawners.Length; i++)
+        {
+            for (int j = 0; j < spawners[i].objects.Length; j++)
+            {
+                if (spawners[i].objects[j].prefab.name == "Meteor")
+                {
+                    spawners[i].objects[j].spawnChance = 0.16f;
+                }
+                if (spawners[i].objects[j].prefab.name == "Meteorite_01")
+                {
+                    spawners[i].objects[j].spawnChance = 0.2f;
+                }
+            }
+        }
+    }
+
+    private void ConfigLevel5()
+    {
+        Camera.main.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+        Camera.main.transform.position = new Vector3(0, 2, 10);
+        var ground = GameObject.Find("Ground");
+        ground.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+    }
+
+    private void ConfigLevel0()
+    {
+        Camera.main.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        Camera.main.transform.position = new Vector3(0, 2, -10);
+        var ground = GameObject.Find("Ground");
+        ground.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+
+        for (int i = 0; i < spawners.Length; i++)
+        {
+            for (int j = 0; j < spawners[i].objects.Length; j++)
+            {
+                if (spawners[i].objects[j].prefab.name == "Bird" ||
+                    spawners[i].objects[j].prefab.name == "Meteor" ||
+                    spawners[i].objects[j].prefab.name == "Meteorite_01")
+                {
+                    spawners[i].objects[j].spawnChance = 0f;
+                }
+
+            }
+        }
     }
 
     private void UpdateHiscore()
