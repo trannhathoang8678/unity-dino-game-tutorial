@@ -8,8 +8,8 @@ public class Obstacle : MonoBehaviour
 
     private void Start()
     {
-        leftEdge = Camera.main.ScreenToWorldPoint(Vector3.zero).x - 2f;
-        rightEdge = 10f;
+        leftEdge = -11f;     //Camera.main.ScreenToWorldPoint(Vector3.zero).x - 2f;
+        rightEdge = 11f;
         downEdge = 0f;
     }
 
@@ -25,13 +25,25 @@ public class Obstacle : MonoBehaviour
         }
         if (this.gameObject.tag == "Meteor")
         {
-            transform.position += new Vector3(-1.5f, -1, 0) * GameManager.Instance.gameSpeed * Time.deltaTime;
+            if (this.gameObject.name.Contains("Meteorite_01"))
+            {
+                transform.position += new Vector3(-0.5f, -1, 0) * GameManager.Instance.gameSpeed * Time.deltaTime;
+            } else
+            {
+                transform.position += new Vector3(-1.5f, -1, 0) * GameManager.Instance.gameSpeed * Time.deltaTime;
+            }
+            
         }
-        /*
+        if (this.gameObject.name.Contains("Bird_01"))
+        {
+            transform.position += Vector3.left * GameManager.Instance.gameSpeed * Time.deltaTime * 0.5f;
+
+        }
+
         if (transform.position.x < leftEdge || transform.position.x > rightEdge 
             || transform.position.y < downEdge) {
             Destroy(gameObject);
-        }*/
+        }
     }
 
 }

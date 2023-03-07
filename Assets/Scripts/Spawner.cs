@@ -35,7 +35,17 @@ public class Spawner : MonoBehaviour
             {
                 GameObject obstacle = Instantiate(obj.prefab);
                 obstacle.transform.position = transform.position;
-                
+                //Debug.Log(obj.prefab.name);
+                if (obj.prefab.name == "Bird_01")
+                {
+                    obstacle.transform.position = new Vector3(10f, 2f, 0f);
+                }
+                if (obj.prefab.name == "Meteorite_01" || obj.prefab.name == "Meteor")
+                {
+                    var x = Random.Range(-7f, 7f);
+                    Debug.Log(x);
+                    obstacle.transform.position = new Vector3(x, 5f, 0f);
+                }
                 break;
             }
 

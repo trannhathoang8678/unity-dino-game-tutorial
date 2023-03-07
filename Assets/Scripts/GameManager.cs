@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour
         score += gameSpeed * Time.deltaTime * 2f;
         scoreText.text = Mathf.FloorToInt(score).ToString("D5");
         
-        if (score >= 100)
+        if (score >= 100 && score < 300)
         {
             if (level < 1)
             {
@@ -122,9 +122,7 @@ public class GameManager : MonoBehaviour
                 level = 1;
             }
             ConfigLevel1();
-            ConfigLevel5();
-        }
-        if (score >= 200)
+        } else if (score >= 300 && score < 500)
         {
             if (level < 2)
             {
@@ -135,10 +133,41 @@ public class GameManager : MonoBehaviour
                 level = 2;
             }
             ConfigLevel2();
-
+        } else if (score >= 500 && score < 700)
+        {
+            ConfigLevel3();
+        } else if (score >= 700 && score < 1000)
+        {
+            ConfigLevel4();
+        } else if (score >= 1000)
+        {
+            ConfigLevel5();
         }
 
 
+    }
+
+    private void ConfigLevel0()
+    {
+        Camera.main.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        Camera.main.transform.position = new Vector3(0, 2, -10);
+        var ground = GameObject.Find("Ground");
+        ground.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+
+        for (int i = 0; i < spawners.Length; i++)
+        {
+            for (int j = 0; j < spawners[i].objects.Length; j++)
+            {
+                if (spawners[i].objects[j].prefab.name == "Bird" ||
+                    spawners[i].objects[j].prefab.name == "Bird_01" ||
+                    spawners[i].objects[j].prefab.name == "Meteor" ||
+                    spawners[i].objects[j].prefab.name == "Meteorite_01")
+                {
+                    spawners[i].objects[j].spawnChance = 0f;
+                }
+
+            }
+        }
     }
 
     private void ConfigLevel1()
@@ -147,9 +176,9 @@ public class GameManager : MonoBehaviour
         {
             for (int j = 0; j < spawners[i].objects.Length; j++)
             {
-                if (spawners[i].objects[j].prefab.name == "Bird")
+                if (spawners[i].objects[j].prefab.name == "Bird_01")
                 {
-                    spawners[i].objects[j].spawnChance = 0.2f;
+                    spawners[i].objects[j].spawnChance = 0.05f;
                 }
             }
         }
@@ -161,11 +190,35 @@ public class GameManager : MonoBehaviour
         {
             for (int j = 0; j < spawners[i].objects.Length; j++)
             {
+                if (spawners[i].objects[j].prefab.name == "Meteorite_01")
+                {
+                    spawners[i].objects[j].spawnChance = 0.2f;
+                }
+            }
+        }
+    }
+
+    private void ConfigLevel3()
+    {
+        for (int i = 0; i < spawners.Length; i++)
+        {
+            for (int j = 0; j < spawners[i].objects.Length; j++)
+            {
                 if (spawners[i].objects[j].prefab.name == "Meteor")
                 {
                     spawners[i].objects[j].spawnChance = 0.16f;
                 }
-                if (spawners[i].objects[j].prefab.name == "Meteorite_01")
+            }
+        }
+    }
+
+    private void ConfigLevel4()
+    {
+        for (int i = 0; i < spawners.Length; i++)
+        {
+            for (int j = 0; j < spawners[i].objects.Length; j++)
+            {
+                if (spawners[i].objects[j].prefab.name == "Bird")
                 {
                     spawners[i].objects[j].spawnChance = 0.2f;
                 }
@@ -181,27 +234,7 @@ public class GameManager : MonoBehaviour
         ground.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
     }
 
-    private void ConfigLevel0()
-    {
-        Camera.main.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-        Camera.main.transform.position = new Vector3(0, 2, -10);
-        var ground = GameObject.Find("Ground");
-        ground.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-
-        for (int i = 0; i < spawners.Length; i++)
-        {
-            for (int j = 0; j < spawners[i].objects.Length; j++)
-            {
-                if (spawners[i].objects[j].prefab.name == "Bird" ||
-                    spawners[i].objects[j].prefab.name == "Meteor" ||
-                    spawners[i].objects[j].prefab.name == "Meteorite_01")
-                {
-                    spawners[i].objects[j].spawnChance = 0f;
-                }
-
-            }
-        }
-    }
+    
 
     private void UpdateHiscore()
     {
