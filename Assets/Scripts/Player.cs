@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     public float jumpForce = 8f;
     public float runForce = 5f;
     public float gravity = 9.81f * 2f;
-    public int lives = 3;
+    public int hp = 100;
 
     SpriteRenderer spriteRenderer;
 
@@ -31,7 +31,6 @@ public class Player : MonoBehaviour
     private void Start()
     {
         spriteRenderer = this.GetComponent<SpriteRenderer>();
-        //txtLives = this.GetComponent<TMP_Text>();
     }
 
     private void Update()
@@ -82,27 +81,27 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Left") || other.CompareTag("Right") || other.CompareTag("Meteor"))
+        InvokeRepeating("RedDamageEffect", 0f, 0.5f);
+        spriteRenderer.color = Color.white;
+        if (hp > 25)
         {
-            InvokeRepeating("RedDamageEffect", 0f, 0.5f);
-            spriteRenderer.color = Color.white;
-            if (lives > 1)
+            ite = 4;
+            if (other.CompareTag("Meteor"))
             {
-                ite = 4;
-                lives -= 1;
-                txtLives.text = lives.ToString();
-                return;
-            }
+                hp -= 50;
+            } 
             else
             {
-                lives = 3;
-                spriteRenderer.color = Color.white;
-
-                txtLives.text = lives.ToString();
-                FindObjectOfType<GameManager>().GameOver();
+                hp -= 25;
             }
+            txtLives.text = hp.ToString();
         }
-
+        else
+        {
+            hp = 100;
+            spriteRenderer.color = Color.white;
+            txtLives.text = hp.ToString();
+            FindObjectOfType<GameManager>().GameOver();
+        }
     }
-
 }
