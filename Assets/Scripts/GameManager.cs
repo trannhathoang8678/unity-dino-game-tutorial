@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [DefaultExecutionOrder(-1)]
@@ -77,7 +78,6 @@ public class GameManager : MonoBehaviour
         {
             spawner.gameObject.SetActive(true);
         }
-            
         gameOverText.gameObject.SetActive(false);
         retryButton.gameObject.SetActive(false);
 
@@ -103,6 +103,11 @@ public class GameManager : MonoBehaviour
         retryButton.gameObject.SetActive(true);
         
         UpdateHiscore();
+    }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 
     private void Update()
