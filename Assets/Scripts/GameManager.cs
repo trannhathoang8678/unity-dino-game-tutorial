@@ -211,7 +211,7 @@ public class GameManager : MonoBehaviour
             {
                 if (spawners[i].objects[j].prefab.name == "Meteorite_01")
                 {
-                    spawners[i].objects[j].spawnChance = 0.2f;
+                    spawners[i].objects[j].spawnChance = 0.4f;
                 }
             }
         }
@@ -226,7 +226,7 @@ public class GameManager : MonoBehaviour
             {
                 if (spawners[i].objects[j].prefab.name == "Meteor")
                 {
-                    spawners[i].objects[j].spawnChance = 0.16f;
+                    spawners[i].objects[j].spawnChance = 0.3f;
                 }
             }
         }
@@ -257,7 +257,21 @@ public class GameManager : MonoBehaviour
 
     private void ConfigLevel6()
     {
-        gameSpeedIncrease = 0.3f;
+        gameSpeedIncrease = 0.5f;
+        for (int i = 0; i < spawners.Length; i++)
+        {
+            for (int j = 0; j < spawners[i].objects.Length; j++)
+            {
+                if (spawners[i].objects[j].prefab.name == "Meteorite_01")
+                {
+                    spawners[i].objects[j].spawnChance = 0.5f;
+                }
+                if (spawners[i].objects[j].prefab.name == "Meteor")
+                {
+                    spawners[i].objects[j].spawnChance = 0.4f;
+                }
+            }
+        }
     }
 
     

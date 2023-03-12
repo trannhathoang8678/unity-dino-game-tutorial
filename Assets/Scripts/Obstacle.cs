@@ -27,10 +27,10 @@ public class Obstacle : MonoBehaviour
         {
             if (this.gameObject.name.Contains("Meteorite_01"))
             {
-                transform.position += new Vector3(-0.5f, -1, 0) * GameManager.Instance.gameSpeed * Time.deltaTime;
+                transform.position += new Vector3(0f, -0.5f, 0) * GameManager.Instance.gameSpeed * Time.deltaTime;
             } else
             {
-                transform.position += new Vector3(-1.5f, -1, 0) * GameManager.Instance.gameSpeed * Time.deltaTime;
+                transform.position += new Vector3(-0.5f, -0.5f, 0) * GameManager.Instance.gameSpeed * Time.deltaTime;
             }
             
         }

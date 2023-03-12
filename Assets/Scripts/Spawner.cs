@@ -40,9 +40,15 @@ public class Spawner : MonoBehaviour
                 {
                     obstacle.transform.position = new Vector3(10f, 2f, 0f);
                 }
-                if (obj.prefab.name == "Meteorite_01" || obj.prefab.name == "Meteor")
+                if (obj.prefab.name == "Meteorite_01")
                 {
                     var x = Random.Range(-7f, 7f);
+                    Debug.Log(x);
+                    obstacle.transform.position = new Vector3(x, 5f, 0f);
+                }
+                if (obj.prefab.name == "Meteor")
+                {
+                    var x = Random.Range(0f, 10f);
                     Debug.Log(x);
                     obstacle.transform.position = new Vector3(x, 5f, 0f);
                 }
