@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
     {
         player = FindObjectOfType<Player>();
         spawners = FindObjectsOfType<Spawner>();
+        duckClip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Sound/duck.mp3");
         maazClip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Sound/maaz.mp3");
         nightClip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Sound/night.mp3");
         boomClip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Sound/boom.mp3");
@@ -58,6 +59,7 @@ public class GameManager : MonoBehaviour
 
     public void NewGame()
     {
+        audioListener.GetComponent<AudioSource>().clip = null ;
         Obstacle[] obstacles = FindObjectsOfType<Obstacle>();
 
         foreach (var obstacle in obstacles) {
@@ -116,7 +118,7 @@ public class GameManager : MonoBehaviour
             if (level < 1)
             {
                 // Set the new audio clip
-                audioListener.GetComponent<AudioSource>().clip = maazClip;
+                audioListener.GetComponent<AudioSource>().clip = duckClip;
                 // Play the new audio clip
                 audioListener.GetComponent<AudioSource>().Play();
                 level = 1;
@@ -124,23 +126,32 @@ public class GameManager : MonoBehaviour
             ConfigLevel1();
         } else if (score >= 300 && score < 500)
         {
-            if (level < 2)
-            {
-                // Set the new audio clip
-                audioListener.GetComponent<AudioSource>().clip = nightClip;
-                // Play the new audio clip
-                audioListener.GetComponent<AudioSource>().Play();
-                level = 2;
-            }
+            
             ConfigLevel2();
         } else if (score >= 500 && score < 700)
         {
+            if (level < 3)
+            {
+                // Set the new audio clip
+                audioListener.GetComponent<AudioSource>().clip = maazClip;
+                // Play the new audio clip
+                audioListener.GetComponent<AudioSource>().Play();
+                level = 3;
+            }
             ConfigLevel3();
         } else if (score >= 700 && score < 1000)
         {
             ConfigLevel4();
         } else if (score >= 1000)
         {
+            if (level < 5)
+            {
+                // Set the new audio clip
+                audioListener.GetComponent<AudioSource>().clip = nightClip;
+                // Play the new audio clip
+                audioListener.GetComponent<AudioSource>().Play();
+                level = 5;
+            }
             ConfigLevel5();
         }
 
@@ -200,6 +211,7 @@ public class GameManager : MonoBehaviour
 
     private void ConfigLevel3()
     {
+        
         for (int i = 0; i < spawners.Length; i++)
         {
             for (int j = 0; j < spawners[i].objects.Length; j++)
@@ -228,6 +240,7 @@ public class GameManager : MonoBehaviour
 
     private void ConfigLevel5()
     {
+        
         Camera.main.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
         Camera.main.transform.position = new Vector3(0, 2, 10);
         var ground = GameObject.Find("Ground");
