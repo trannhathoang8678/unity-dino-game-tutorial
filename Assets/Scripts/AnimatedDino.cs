@@ -29,7 +29,7 @@ public class AnimatedDino : MonoBehaviour
     {
         frame++;
 
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
         {
 
             if (frame >= sprites.Length)

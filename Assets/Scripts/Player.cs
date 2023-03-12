@@ -41,17 +41,17 @@ public class Player : MonoBehaviour
         {
             direction = Vector3.down;
 
-            if (Input.GetButton("Jump"))
+            if (Input.GetButton("Jump") || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
             {
                 direction = Vector3.up * jumpForce;
             }
 
-            if (Input.GetKey(KeyCode.D))
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
             {
                 direction = Vector3.right * runForce;
             }
 
-            if (Input.GetKey(KeyCode.A))
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
             {
                 direction = Vector3.left * runForce;
             }

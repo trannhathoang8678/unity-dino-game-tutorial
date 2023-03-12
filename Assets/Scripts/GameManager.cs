@@ -144,9 +144,12 @@ public class GameManager : MonoBehaviour
         } else if (score >= 700 && score < 1000)
         {
             ConfigLevel4();
-        } else if (score >= 1000)
+        } else if (score >= 1000 && score < 1200)
         {
             ConfigLevel5();
+        } else if (score >= 1200)
+        {
+            ConfigLevel6();
         }
 
 
@@ -158,7 +161,7 @@ public class GameManager : MonoBehaviour
         Camera.main.transform.position = new Vector3(0, 2, -10);
         var ground = GameObject.Find("Ground");
         ground.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-
+        gameSpeedIncrease = 0.1f;
         for (int i = 0; i < spawners.Length; i++)
         {
             for (int j = 0; j < spawners[i].objects.Length; j++)
@@ -237,6 +240,11 @@ public class GameManager : MonoBehaviour
         Camera.main.transform.position = new Vector3(0, 2, 10);
         var ground = GameObject.Find("Ground");
         ground.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+    }
+
+    private void ConfigLevel6()
+    {
+        gameSpeedIncrease = 0.3f;
     }
 
     
